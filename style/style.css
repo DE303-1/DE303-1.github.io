@@ -1,0 +1,44 @@
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}
+
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}
+
+body{line-height:1}
+ol,ul{list-style:none}
+blockquote,q{quotes:none}
+blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}
+table{border-collapse:collapse;border-spacing:0}
+
+
+#main-wrapper{width:800px;margin:50px 100px}
+.clr{clear:both}
+#dom{margin-bottom:40px}
+
+.centered{text-align:center;color:#999;font-size:.8em;text-transform:uppercase}
+#controls{font-size:20px;margin:0 0 0 0px}
+
+.button{width:55px;padding:4px;margin-right:4px;cursor:pointer;text-align:center;font-size:13px;border:1px solid #e0e0e0;float:left;-moz-border-radius:6px;border-radius:6px}
+.button:hover{background:#e0e0e0}
+.button.current{background:#000;color:#fff}#buttons{width:182px;float:right}
+#buttons h3{text-transform:uppercase;font-size:13px;padding:3px 0;margin:2px 4px 3px 0;float:left}
+#controls
+.sentence{float:left;padding:0 0 23px}
+.dropdown-wrapper{position:relative;width:110px;padding:0 16px 5px 5px;float:left;margin:0 14px 18px 0;background:#fff;cursor:pointer;outline:none;font-weight:700}
+#sex.dropdown-wrapper{width:80px}
+#age.dropdown-wrapper{width:120px}
+#empstat.dropdown-wrapper{width:130px}
+#dayweek.dropdown-wrapper{width:100px}
+svg{font:14px inconsolata,Monaco,lucida console,Consolas,courier new}
+text.descrip tspan{font-size:1em}.axis{font-size:.75em}
+.axis text.activitylab{font-size:14px;text-transform:uppercase}
+.axis path,.axis line{fill:none;stroke:#000;shape-rendering:crispEdges}
+.x.axis path{display:none}
+.y.axis path{display:none}
+.baseline line{stroke:#000;stroke-width:2px}
+.background path{fill:none;stroke:#fe344f;stroke-opacity:.1}
+path.medianline{fill:none;stroke:green;stroke-width:2}
+.median circle{fill:green;stroke:#000}
+
+line.annotation{stroke:#ccc;stroke-dasharray:5,2;stroke-width:1.2px}
+text.annotation,#line-chart .agehighlight text{font-family:inconsolata,Monaco,lucida console,Consolas,courier new;font-size:14px;fill:#444;text-anchor:end}
+
+.medianlab text{text-transform:uppercase}
