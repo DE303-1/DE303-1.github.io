@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<head>
+  <title>DE303-1</title>
+  <link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class = "mydetails">
+    <h2 class = "myname">Lakshya Ranwan</h2>
+    <h2 class = "myrollnumber">19U130030</h2>
+  </div>
+  <div id="main_body">
+    <div id="input">
+      <div>
+        <div class="sentence">I am&nbsp;</div>
+        <div id="sex" class="dropdown-wrapper" , tabindex="1" style="float:left;z-index:10">
+          <span>Sex</span>
+          <ul class="dropdown"></ul>
+        </div>
+        <div id="age" class="dropdown-wrapper" , tabindex="2" style="float:left;z-index:9">
+          <span>Age</span>
+          <ul class="dropdown"></ul>
+        </div>
+        <div class="sentence">years old and&nbsp;</div>
+        <div id="empstat" class="dropdown-wrapper" , tabindex="2" style="float:left;z-index:9">
+          <span>Employment</span>
+          <ul class="dropdown"></ul>
+        </div>
+        <div class="clr"></div>
+        <div class="sentence">Show me the hours spent on a&nbsp;</div>
+        <div id="dayweek" class="dropdown-wrapper" , tabindex="2" style="float:left;z-index:5">
+          <span>Day of the Week</span>
+          <ul class="dropdown"></ul>
+        </div>
+        <div class="clr"></div>
+      </div>
+    </div>
+    <div id="graph"></div>
+  </div>
+
+  <script src="./d3-3-5-5.min.js"></script>
+  <script>
+  //group all togeheter  , okay DONE
+    var USER_SCALE = 'relative', USER_SEX = 'f', USER_AGE = '18', USER_EMPSTAT = 'e',USER_DAYWEEK = 'd';
+    var USER_GROUP = USER_SEX + USER_DAYWEEK + USER_EMPSTAT + USER_AGE;
+    var activities = ["010101", "010000", "020000", "030000", "050000", "060000", "110000", "120000", "180000"];
+    var sexes = {"f": "female","m": "male",};
+    var ages = {"25": "25 to 44","45": "45 to 64","65": "65 or more","18": "18 to 24"};
+    var empstats = {"u": "unemployed","n": "not looking","e": "employed"}
+    var dayweeks = {"e": "weekend","d": "weekday"}
+    var action_names = {"010101":"Sleeping","010000":"Personal Care","020000":"Household Work","030000":"Caring for Others","050000":"Work","060000":"Education","110000":"Eating","120000":"Leisure","180000":"Travel or Commute"};
+
+  //create graph, done
+    var margin = {top: 0, right: 10, bottom: 20, left: 110},
+        width = 900 - margin.left - margin.right,
+    	height = 560 - margin.top - margin.bottom;
+      var x = {};
+    var y = d3.scale.ordinal()
+    	.domain(activities)
+    	.rangePoints([0, height], 1);
+      var line = d3.svg.line();
+    var axis = d3.svg.axis().orient("bottom").tickFormat(d3.format("d"));
+    var lineMedian = d3.svg.line()
+        .x(function(d) { return x[d.act](d.val/60); })
+        .y(function(d) { return y(d.act); });
+        var svg = d3.select("#graph").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        d3.tsv("data/sims_final.tsv", type, function(error, data) {
+var sims_by_grp = {};
+    	data.forEach(function(d) {
+if (!(d.key in sims_by_grp)) {
+                sims_by_grp[d.key] = [];
+            }
+
+            sims_by_grp[d.key].push(d);
+    	});
+        activities.forEach(function(act) {
+            x[act] = d3.scale.linear().range([0, width]);
+            if (USER_SCALE == 'relative') {
+    		    x[act].domain([0, d3.max(sims_by_grp[USER_GROUP].map(function(sim) {
+                        return sim['a_'+act] / 60;
+                    }))]
+                )
+            }
+        });
+        var simlines = svg.append("g")
+            .attr("class", "background")
+          .selectAll("path")
+            .data(sims_by_grp[USER_GROUP])
+          .enter().append("path")
+            .attr("class", "simline")
+            .attr("d", path);
+var g = svg.selectAll(".dimension")
+            .data(activities)
+        .enter().append("g")
+          .attr("class", "activity")
+          .attr("transform", function(d) { return "translate(0," + y(d) + ")"; });
+g.append("g")
+            .attr("class", "axis")
+            .each(function(d) { d3.select(this).call(axis.scale(x[d])); })
+          .append("text")
+            .attr("class", "activitylab")
+            .style("text-anchor", "start")
+    	  	.attr("dy", "1.0em")
+            .attr("x", -margin.left+10)
+            .attr("y", -10)
+            .text(function(d) { return action_names[d]; });
+    	g.selectAll(".activitylab").call(wrap, margin.left-20);
+var median_vals = activities.map(function(act) {
+            var obj = {
+                act: act,
+                val: d3.median(sims_by_grp[USER_GROUP].map(function(sim) { return sim['a_'+act] })),
+            };
+
+            return obj;
+        });
+  //median line, DONE!!
+        var medianlab = svg.append("g")
+            .attr("class", "medianlab")
+            .attr("text-anchor", "middle")
+            .attr("transform", "translate("+x[median_vals[0].act](median_vals[0].val/60)+","+y(median_vals[0].act)+")");
+        medianlab.append("text")
+            .attr("dy", "-1.2em")
+            .text("Median");
+        var median_line = svg.append("path")
+            .datum(median_vals)
+            .attr("class", "medianline")
+            .attr("d", lineMedian);
+var simmedian = svg.append("g")
+            .attr("class", "median")
+          .selectAll("circle")
+            .data(median_vals)
+          .enter().append("circle")
+            .attr("class", "mediancircle")
+            .attr("cx", function(d) { return x[d.act](d.val/60); })
+            .attr("cy", function(d) { return y(d.act); })
+            .attr("r", 6);
+  d3.selectAll("#buttons .button").on("click", function() {
+            USER_SCALE = d3.select(this).attr("data-val");
+        	d3.select("#buttons .current").classed("current", false);
+        	d3.select(this).classed("current", true);
+            update();
+        });
+var dropdown_age = d3.select("#input #age");
+    	dropdown_age.select("span").text(ages[USER_AGE]);
+        dropdown_age.on("click", function() {
+            d3.select(this).classed("active", !d3.select(this).classed("active"));});
+        var dropdown_age_li = dropdown_age.select(".dropdown").selectAll("li")
+            .data(Object.keys(ages))
+          .enter().append("li")
+            .attr("id", function(d) { return "a"+d; })
+            .classed("current", function(d) { return d == USER_AGE ? true : false; })
+            .text(function(d) { return ages[d]; });
+        dropdown_age_li.on("click", function(d) {
+            d3.select("#age span").text(ages[d]);
+            d3.select(this).classed("current", true);
+            d3.select("#age #a" + USER_AGE).classed("current", false);
+
+            USER_AGE = d;
+    		USER_KEY = USER_SEX + USER_AGE;
+            update();
+        });
+var dropdown_empstat = d3.select("#input #empstat");
+    	dropdown_empstat.select("span").text(empstats[USER_EMPSTAT]);
+        dropdown_empstat.on("click", function() {
+            d3.select(this).classed("active", !d3.select(this).classed("active"));});
+        var dropdown_empstat_li = dropdown_empstat.select(".dropdown").selectAll("li")
+            .data(Object.keys(empstats))
+          .enter().append("li")
+            .attr("id", function(d) { return d; })
+            .classed("current", function(d) { return d == USER_EMPSTAT ? true : false; })
+            .text(function(d) { return empstats[d]; });
+        dropdown_empstat_li.on("click", function(d) {
+            d3.select("#empstat span").text(empstats[d]);
+            d3.select(this).classed("current", true);
+            d3.select("#empstat #" + USER_EMPSTAT).classed("current", false);
+  USER_EMPSTAT = d;
+update();});
+var dropdown_sex = d3.select("#input #sex");
+    	dropdown_sex.select("span").text(sexes[USER_SEX]);
+        dropdown_sex.on("click", function() {
+            d3.select(this).classed("active", !d3.select(this).classed("active"));
+        });
+        var dropdown_sex_li = dropdown_sex.select(".dropdown").selectAll("li")
+            .data(Object.keys(sexes))
+          .enter().append("li")
+            .attr("id", function(d) { return d; })
+            .classed("current", function(d) { return d == USER_SEX ? true : false; })
+            .text(function(d) { return sexes[d]; });
+        dropdown_sex_li.on("click", function(d) {
+            d3.select("#sex span").text(sexes[d]);
+            d3.select(this).classed("current", true);
+            d3.select("#sex #" + USER_SEX).classed("current", false);
+USER_SEX = d;
+update();
+        });
+var dropdown_dayweek = d3.select("#input #dayweek");
+    	dropdown_dayweek.select("span").text(dayweeks[USER_DAYWEEK]);
+        dropdown_dayweek.on("click", function() {
+            d3.select(this).classed("active", !d3.select(this).classed("active"));});
+        var dropdown_dayweek_li = dropdown_dayweek.select(".dropdown").selectAll("li")
+            .data(Object.keys(dayweeks))
+          .enter().append("li")
+            .attr("id", function(d) { return d; })
+            .classed("current", function(d) { return d == USER_DAYWEEK ? true : false; })
+            .text(function(d) { return dayweeks[d]; });
+        dropdown_dayweek_li.on("click", function(d) {
+            d3.select("#dayweek span").text(dayweeks[d]);
+            d3.select(this).classed("current", true);
+            d3.select("#dayweek #" + USER_DAYWEEK).classed("current", false);
+            USER_DAYWEEK = d;
+update();});
+function update() {
+            USER_GROUP = USER_SEX + USER_DAYWEEK + USER_EMPSTAT + USER_AGE;
+activities.forEach(function(act) {
+    	        if (USER_SCALE == 'relative') {
+    			    x[act].domain([0, d3.max(sims_by_grp[USER_GROUP].map(function(sim) {
+    	                	return sim['a_'+act] / 60;
+    	                }))]
+    	            )
+    	        }
+    	    });
+        	svg.selectAll('.axis')
+    			.transition()
+    			.duration(400)
+            	.each(function(d) { d3.select(this).call(axis.scale(x[d])); })
+simlines.data(sims_by_grp[USER_GROUP]);
+svg.selectAll(".simline")
+                .transition()
+                .duration(400)
+                .attr("d", path);
+median_vals.map(function(d) {
+                d.val = d3.median(sims_by_grp[USER_GROUP].map(function(sim) {
+                    return sim['a_'+d.act];
+                }));
+return d;
+            });
+            median_line.datum(median_vals);
+            median_line
+                .transition()
+                .duration(400)
+                .attr("d", lineMedian);
+simmedian.data(median_vals);
+            svg.selectAll(".mediancircle")
+                .transition()
+                .duration(400)
+                .attr("cx", function(d) {
+                return x[d.act](d.val/60);
+            });
+            medianlab
+                .transition()
+                .duration(400)
+                .attr("transform", "translate("+x[median_vals[0].act](median_vals[0].val/60)+","+y(median_vals[0].act)+")");
+}
+});
+    function path(d) {
+        return line(activities.map(function(p) { return [x[p](d['a_'+p]/60), y(p)]; }));
+    }
+function type(d, i) {
+    	d3.keys(d).map(function(key) {
+            if (key != "key") {
+                d[key] = +d[key];
+            }
+    	});
+
+    	return d;
+    }
+    function wrap(text, width) {
+      text.each(function() {
+        var text = d3.select(this),
+            words = text.text().split(/\s+/).reverse(),
+            word,
+            line = [],
+            lineNumber = 0,
+            lineHeight = 1.2,
+            y = text.attr("y"),
+            dy = parseFloat(text.attr("dy")),
+            tspan = text.text(null).append("tspan").attr("x", -margin.left+10).attr("y", y).attr("dy", dy + "em");
+        while (word = words.pop()) {
+          line.push(word);
+          tspan.text(line.join(" "));
+          if (tspan.node().getComputedTextLength() > width) {
+            line.pop();
+            tspan.text(line.join(" "));
+            line = [word];
+    		tspan = text.append("tspan").attr("x", -margin.left+10).attr("y", y).attr("dy", lineHeight + dy + "em").text(word);
+
+          }
+        }
+      });
+    }
+  </script>
+</body>

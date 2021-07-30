@@ -1,0 +1,59 @@
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}
+
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}
+
+body{line-height:1; height: 100%;overflow: hidden;}
+ol,ul{list-style:none}
+blockquote,q{quotes:none}
+blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}
+table{border-collapse:collapse;border-spacing:0}
+
+body{font-family:inconsolata}
+#main_body{width:800px;margin:40px 100px}
+.clr{clear:both}
+#dom{margin-bottom:40px}
+h1{font-family:inconsolata; new;font-size:24px;font-style:normal;text-transform:uppercase;margin-bottom:20px;text-align:center}
+
+h3{text-transform:uppercase;font-size:20px;padding:3px 0;margin:-5px 0 3px}.centered{text-align:center;color:#999;font-size:.8em;text-transform:uppercase}
+#input{font-size:20px;margin:0 0 0 20px}
+
+.button{width:55px;padding:4px;margin-right:4px;cursor:pointer;text-align:center;font-size:13px;border:1px solid #e0e0e0;float:left;-moz-border-radius:6px;border-radius:6px}
+.button:hover{background:#e0e0e0}
+.button.current{background:#000;color:#fff}#buttons{width:182px;float:right}
+#buttons h3{text-transform:uppercase;font-size:13px;padding:3px 0;margin:2px 4px 3px 0;float:left}
+#input
+.sentence{float:left;padding:0 0 40px}
+.dropdown-wrapper{position:relative;width:110px;padding:0 16px 5px 5px;float:left;margin:0 14px 18px 0;background:#fff;border-bottom:5px solid #000;cursor:pointer;outline:none;font-weight:700}
+#sex.dropdown-wrapper{width:80px}
+#age.dropdown-wrapper{width:120px}
+#empstat.dropdown-wrapper{width:130px}
+#dayweek.dropdown-wrapper{width:100px}
+.dropdown-wrapper:after{content:"";width:0;height:0;position:absolute;right:5px;top:50%;margin-top:-5px;border-width:6px 6px 0;border-style:solid;border-color:#000 transparent}
+.dropdown-wrapper
+.dropdown{position:absolute;top:100%;left:-5px;right:0;background:#fff;list-style:none;opacity:0;pointer-events:none}
+.dropdown-wrapper .dropdown li{display:block;text-decoration:none;color:#000;border-left:0px solid;padding:5px 8px;transition:all 0.2s ease-out}
+.dropdown-wrapper .dropdown li:hover{color:#00525a;background:#e0e0e0}
+.dropdown-wrapper .dropdown li.current{display:none}
+.dropdown-wrapper.active:after{border-width:0 6px 6px}
+.dropdown-wrapper.active .dropdown{opacity:1;pointer-events:auto}
+svg{font:14px inconsolata}
+text.descrip tspan{font-size:1em}.axis{font-size:.75em}
+.axis text.activitylab{font-size:14px;text-transform:uppercase}
+.axis path,.axis line{fill:none;stroke:#000;shape-rendering:crispEdges}
+.x.axis path{display:none}
+.y.axis path{display:none}
+.baseline line{stroke:#000;stroke-width:2px}
+.background path{fill:none;stroke:#000000;stroke-opacity:.075}
+path.medianline{fill:none;stroke:orange;stroke-width:3}
+.median circle{fill:orange;stroke:#000;stroke-width:1.5}
+.desc{font-family:mercury ssm a,mercury ssm b;font-style:italic;font-weight:400;font-size:14px;line-height:1.4em}
+line.annotation{stroke:#ccc;stroke-dasharray:5,2;stroke-width:1.2px}
+text.annotation,#line-chart .agehighlight text{font-family:inconsolata,Monaco,lucida console,Consolas,courier new;font-size:14px;fill:#444;text-anchor:end}
+text.descrip{font-family:mercury ssm a,mercury ssm b;font-style:italic;font-weight:400;font-size:13px;line-height:1.4em}
+.medianlab text{text-transform:uppercase}
+.mydetails{position:absolute;top:90vh; left: 90vw;}
+.myname{font-weight: bold;}
+.myrollnumber{font-weight: lighter;;}
+#graph{
+  margin-top: 20px;
+}
